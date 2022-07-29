@@ -217,6 +217,7 @@ class Carbon extends React.PureComponent {
                 onBeforeChange={this.onBeforeChange}
                 onGutterClick={this.props.onGutterClick}
                 onSelection={this.onSelection}
+                editorDidMount={this.props.editorDidMount}
               />
               {config.watermark && <Watermark light={light} />}
               <div className="container-bg">

@@ -81,6 +81,10 @@ class Editor extends React.Component {
 
   carbonNode = React.createRef()
 
+  editorDidMount = editor => {
+    this.codeMirrorInstance = editor
+  }
+
   getTheme = () => this.props.themes.find(t => t.id === this.state.theme) || DEFAULT_THEME
 
   onUpdate = debounce(updates => this.props.onUpdate(updates), 750, {
@@ -94,7 +98,10 @@ class Editor extends React.Component {
 
   updateCode = code => this.updateState({ code })
   updateTitleBar = titleBar => this.updateState({ titleBar })
-  updateWidth = width => this.setState({ widthAdjustment: false, width })
+  updateWidth = width => {
+    this.setState({ widthAdjustment: false, width })
+    this.codeMirrorInstance.refresh()
+  }
 
   getCarbonImage = async (
     {
@@ -216,6 +223,7 @@ class Editor extends React.Component {
     if (Object.prototype.hasOwnProperty.call(DEFAULT_SETTINGS, key)) {
       this.updateState({ preset: null })
     }
+    this.codeMirrorInstance.refresh()
   }
 
   resetDefaultSettings = () => {
@@ -406,6 +414,7 @@ class Editor extends React.Component {
                 theme={theme}
                 titleBar={titleBar}
                 onTitleBarChange={this.updateTitleBar}
+                editorDidMount={this.editorDidMount}
               >
                 {code != null ? code : DEFAULT_CODE}
               </Carbon>
